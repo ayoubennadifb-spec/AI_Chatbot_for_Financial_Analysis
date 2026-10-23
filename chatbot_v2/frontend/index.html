@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GFC Financial Chatbot — BCG GenAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-bcg">BCG</span><span class="logo-x">X</span>
+    </div>
+    <div class="sidebar-title">GFC Financial<br>Chatbot</div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Coverage</p>
+      <div class="company-badge msft">Microsoft</div>
+      <div class="company-badge tsla">Tesla</div>
+      <div class="company-badge aapl">Apple</div>
+      <p class="sidebar-years">FY2021 · FY2022 · FY2023</p>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Quick queries</p>
+      <button class="quick-btn" data-query="Compare all companies">Compare all</button>
+      <button class="quick-btn" data-query="Summarize Apple financial health">Apple summary</button>
+      <button class="quick-btn" data-query="What is Tesla revenue growth?">Tesla growth</button>
+      <button class="quick-btn" data-query="What is Microsoft operating cash flow?">MSFT cash flow</button>
+      <button class="quick-btn" data-query="help">Show all queries</button>
+    </div>
+
+    <div class="sidebar-footer">
+      Powered by BCG GenAI Team<br>
+      <span class="sidebar-sub">10-K data · SEC EDGAR</span>
+    </div>
+  </aside>
+
+  <!-- Main chat area -->
+  <main class="chat-container">
+
+    <header class="chat-header">
+      <div class="header-left">
+        <div class="header-dot"></div>
+        <span class="header-title">Financial Analysis Assistant</span>
+      </div>
+      <div class="header-right">
+        <span id="status-badge" class="badge badge-online">Online</span>
+      </div>
+    </header>
+
+    <div class="chat-messages" id="chat-messages">
+      <!-- Welcome message injected by JS -->
+    </div>
+
+    <footer class="chat-footer">
+      <form class="input-form" id="input-form">
+        <input
+          type="text"
+          id="user-input"
+          class="chat-input"
+          placeholder="Ask about revenue, profit, assets, cash flow..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button type="submit" class="send-btn" id="send-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </form>
+      <div class="input-meta">
+        Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Debug panel (hidden by default, toggle with Ctrl+D) -->
+  <div class="debug-panel" id="debug-panel" style="display:none">
+    <div class="debug-header">Debug Info <button id="debug-close">×</button></div>
+    <pre id="debug-content"></pre>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
