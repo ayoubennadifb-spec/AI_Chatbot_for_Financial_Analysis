@@ -10,7 +10,7 @@ const debugContent = document.getElementById('debug-content');
 
 // ── Simple markdown renderer ─────────────────────────────────────────────
 function renderMarkdown(text) {
-  return text
+  return escapeHtml(text)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g,     '<em>$1</em>')
     .replace(/`(.+?)`/g,       '<code>$1</code>')
@@ -45,10 +45,10 @@ function appendMessage(role, content, meta = null) {
     const metaEl = document.createElement('div');
     metaEl.className = 'message-meta';
     metaEl.innerHTML =
-      `<span class="intent-tag">${meta.intent}</span>` +
+      `<span class="intent-tag">${escapeHtml(String(meta.intent || 'analysis'))}</span>` +
       `<span>conf: ${(meta.confidence * 100).toFixed(0)}%</span>` +
       `<span>${meta.elapsed_ms}ms</span>` +
-      (meta.entities.company ? `<span>${meta.entities.company}</span>` : '') +
+      (meta.entities.company ? `<span>${escapeHtml(String(meta.entities.company))}</span>` : '') +
       (meta.entities.year    ? `<span>FY${meta.entities.year}</span>`  : '');
     messagesEl.appendChild(metaEl);
   }
@@ -174,7 +174,7 @@ debugClose.addEventListener('click', () => {
 // ── Welcome message ───────────────────────────────────────────────────────
 window.addEventListener('load', () => {
   appendMessage('bot',
-    "**Welcome to the GFC Financial Analysis Chatbot!**\n\n" +
+    "**Welcome to FinanceIQ — Financial Analysis Assistant!**\n\n" +
     "I can answer questions about **Microsoft**, **Tesla**, and **Apple** " +
     "based on their 10-K filings from **FY2021 to FY2023**.\n\n" +
     "Try asking:\n" +
