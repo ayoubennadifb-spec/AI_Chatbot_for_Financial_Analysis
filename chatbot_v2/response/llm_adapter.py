@@ -8,10 +8,9 @@ responses grounded in RAG-retrieved financial context.
 from openai import OpenAI
 import config
 
-_client = OpenAI(
-    api_key  = config.CEREBRAS_API_KEY,
-    base_url = 'https://api.cerebras.ai/v1',
-)
+# Construct the client only when an API key is explicitly configured.
+# The public portfolio demo uses the deterministic grounded answer fallback.
+_client = OpenAI(api_key=config.CEREBRAS_API_KEY, base_url='https://api.cerebras.ai/v1') if config.CEREBRAS_API_KEY else None
 
 SYSTEM_PROMPT = """You are a financial analyst assistant at BCG GenAI Consulting,
 helping Global Finance Corp. (GFC) analyze financial data.
@@ -29,6 +28,9 @@ def generate(query: str, context: str) -> str:
     Generate a natural language response using Cerebras LLM.
     context: RAG-retrieved financial passages relevant to the query.
     """
+    if _client is None:
+        raise RuntimeError("LLM is not configured; using grounded rule-based financial answers")
+
     messages = [
         {'role': 'system', 'content': SYSTEM_PROMPT},
         {
