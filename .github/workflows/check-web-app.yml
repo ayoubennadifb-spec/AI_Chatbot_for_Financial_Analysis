@@ -1,0 +1,32 @@
+name: Smoke test FinanceIQ chatbot
+on:
+  push:
+    branches: [portfolio-web-app, main]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r chatbot_v2/requirements.txt
+      - name: Test financial answers without external API
+        run: |
+          cd chatbot_v2
+          python -m compileall -q .
+          python - <<'PY'
+          import os
+          os.environ.pop("CEREBRAS_API_KEY",None)
+          from app import create_app
+          app=create_app()
+          c=app.test_client()
+          assert c.get("/").status_code==200
+          assert c.get("/api/health").status_code==200
+          r=c.post("/api/chat",json={"query":"What is Apple's revenue in 2023?"})
+          assert r.status_code==200,r.data
+          assert r.get_json()["response"],r.data
+          print("FinanceIQ API passed")
+          PY
